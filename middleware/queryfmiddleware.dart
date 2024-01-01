@@ -1,5 +1,6 @@
 import 'package:shelf/shelf.dart';
 
+// check the request format
 String queryfMiddleware(Request request) {
   if (request.url.queryParameters.entries.length < 2) {
     return "Invalid query parameters";
