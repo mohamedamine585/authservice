@@ -1,0 +1,51 @@
+name: Dart Test
+
+on:
+  push:
+    branches:
+      - feature 
+
+jobs:
+  test:
+      runs-on: ubuntu-latest
+
+      steps:
+        - uses: dart-lang/setup-dart@v1
+        - uses: actions/checkout@v3
+       
+        - name: Build  Container 
+          run:  docker build  -t authserver .       
+        
+        - name : install jemeter
+          run:  wget -q "https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.4.1.zip" -P /tmp
+
+        - name : install jemeter
+          run: unzip -q "/tmp/apache-jmeter-5.4.1.zip" -d /opt
+        - name : install jemeter
+          run: echo $PATH        
+          
+          run: docker run authserver &
+          shell: bash
+
+
+
+        - name: Install dependencies
+          run: dart pub get
+        
+
+        - name:  load testing 
+          run: /opt/apache-jmeter-5.4.1/bin/jmeter -n -t ./jmetertestplan.jmx -l results.jtl
+        - name:  show load testing results
+          run: cat results.jtl
+          
+            
+         
+ 
+
+        
+
+        
+     
+    
+ 
+  

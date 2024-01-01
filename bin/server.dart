@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:mongo_dart/mongo_dart.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart';
+import '../middleware/middlewarerouter.dart';
 import '../middleware/queryfmiddleware.dart';
 import '../routes/entry.dart';
 import 'utils.dart';
@@ -15,8 +16,7 @@ void main(List<String> args) async {
   final port = int.parse(Platform.environment['PORT'] ?? '8080');
 
   // Configure a pipeline that logs requests.
-  final handler =
-      Pipeline().addMiddleware(queryfMiddleware()).addHandler(router);
+  final handler = Pipeline().addMiddleware(rootmiddleware()).addHandler(router);
   // init the db
   await Init.initDataBase();
   final server = await serve(handler, ip, port);
