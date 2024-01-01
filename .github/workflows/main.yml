@@ -23,7 +23,7 @@ jobs:
           run: unzip -q "/tmp/apache-jmeter-5.4.1.zip" -d /opt
         - name : install jemeter
           run: echo $PATH        
-          
+        - name:  
           run: docker run authserver &
           shell: bash
 
