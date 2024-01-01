@@ -5,9 +5,10 @@ import '../../repositories/authrepository.dart';
 
 Future<Response> signupHandler(Request req) async {
   try {
+    final requestbody = json.decode(await req.readAsString());
     final wresult = await Authrepository.signUp(
-        playername: req.url.queryParameters.entries.elementAt(0).value,
-        password: req.url.queryParameters.entries.elementAt(1).value);
+        playername: requestbody["playername"],
+        password: requestbody["password"]);
     if (wresult?.isSuccess ?? false) {
       return Response.ok(json.encode({"message": "Player is signed up"}),
           headers: {'content-type': 'application/json'});
