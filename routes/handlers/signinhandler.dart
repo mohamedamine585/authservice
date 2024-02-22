@@ -9,11 +9,13 @@ Future<Response> signinHandler(Request req) async {
     final token = await Authrepository.signIn(
         email: requestbody["email"], password: requestbody["password"]);
     if (token != null) {
-      return Response.ok(json.encode({"message": "Player is signed in"}),
+      final res = Response.ok(json.encode({"message": "Player is signed in"}),
           headers: {
+            'Authorization': 'Bearer ${token}',
             'content-type': 'application/json',
-            'Authorization': 'Bearer ${token}'
           });
+      print(res.headers);
+      return res;
     } else {
       return Response.ok(json.encode({"message": "Cannot sign up the player"}),
           headers: {'content-type': 'application/json'});

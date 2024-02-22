@@ -22,14 +22,24 @@ class Authrepository {
     }
   }
 
-  static Future<WriteResult?> signUp(
+  static Future<String?> signUp(
       {required String email, required String password}) async {
     try {
       final existing =
           await playerscollection.findOne(where.eq("email", email));
       if (existing?.isEmpty ?? true) {
-        return await playerscollection
+        final doc = await playerscollection
             .insertOne({"email": email, "password": hashIT(password)});
+        if (doc.document != null) {
+          String? token = Tokenrepository.CreateJWToken(
+              (doc.document as Map<String, dynamic>)["_id"]);
+          if (token != null) {
+            token = await Tokenrepository.store_token(
+                token: token,
+                Id: (doc.document as Map<String, dynamic>)["_id"]);
+            return token;
+          }
+        }
       }
     } catch (e) {
       print(e);

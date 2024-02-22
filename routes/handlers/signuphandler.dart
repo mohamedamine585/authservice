@@ -6,14 +6,19 @@ import '../../repositories/authrepository.dart';
 Future<Response> signupHandler(Request req) async {
   try {
     final requestbody = json.decode(await req.readAsString());
-    final wresult = await Authrepository.signUp(
+    final token = await Authrepository.signUp(
         email: requestbody["email"], password: requestbody["password"]);
-    if (wresult?.isSuccess ?? false) {
+    if (token != null) {
       return Response.ok(json.encode({"message": "Player is signed up"}),
-          headers: {'content-type': 'application/json'});
+          headers: {
+            'content-type': 'application/json',
+            'Authorization': "Bearer ${token}"
+          });
     } else {
       return Response.ok(json.encode({"message": "Cannot sign up the player"}),
-          headers: {'content-type': 'application/json'});
+          headers: {
+            'content-type': 'application/json',
+          });
     }
   } catch (e) {
     print(e);
