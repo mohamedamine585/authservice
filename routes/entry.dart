@@ -5,6 +5,4 @@ import 'handlers/signinhandler.dart';
 import 'handlers/signuphandler.dart';
 
 // Configure routes.
-Router router = Router()
-  ..post('/signin', signinHandler)
-  ..post('/signup', signupHandler);
+Router router = Router()..post('/signin', signinHandler);
