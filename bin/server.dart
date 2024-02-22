@@ -10,14 +10,10 @@ import 'utils.dart';
 import 'init.dart';
 
 void main(List<String> args) async {
-  // Use any available host or container IP (usually `0.0.0.0`).
-  final ip = "127.0.0.1";
-// For running in containers, we respect the PORT environment variable.
+  final ip = "0.0.0.0";
   final port = int.parse('8080');
 
-  // Configure a pipeline that logs requests.
   final handler = Pipeline().addMiddleware(rootmiddleware()).addHandler(router);
-  // init the db
   await Init.initDataBase();
   final server = await serve(handler, ip, port);
 
