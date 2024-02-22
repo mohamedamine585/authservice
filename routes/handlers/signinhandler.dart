@@ -5,16 +5,19 @@ import '../../repositories/authrepository.dart';
 
 Future<Response> signinHandler(Request req) async {
   try {
+    final requestbody = json.decode(await req.readAsString());
     final token = await Authrepository.signIn(
-        playername: req.url.queryParameters.entries.elementAt(0).value,
-        password: req.url.queryParameters.entries.elementAt(1).value);
-    if (token == null) {
-      return Response.ok(json.encode({"message": "Signin failed"}),
+        email: requestbody["email"], password: requestbody["password"]);
+    if (token != null) {
+      return Response.ok(json.encode({"message": "Player is signed in"}),
+          headers: {
+            'content-type': 'application/json',
+            'Authorization': 'Bearer ${token}'
+          });
+    } else {
+      return Response.ok(json.encode({"message": "Cannot sign up the player"}),
           headers: {'content-type': 'application/json'});
     }
-    return Response.ok(
-        json.encode({"message": "Player is signed in", "token": token}),
-        headers: {'content-type': 'application/json'});
   } catch (e) {
     print(e);
   }

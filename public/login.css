@@ -1,0 +1,49 @@
+.logintitle{
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: red;
+    position: relative;
+     margin-left:200px;
+     font-size:20px;
+}
+.text{
+    font-family: 'Courier New', Courier, monospace;
+
+    position: relative;
+    margin-left:150px;
+}
+.playernamefield{
+    box-shadow: 2px 2px 2px ;
+    position: relative;
+    margin-left:200px;
+}
+.ptext{
+    font-family: 'Courier New', Courier, monospace;
+    position: relative;
+    margin-left:150px;
+}
+.passwordfield{
+    box-shadow: 2px 2px 2px ;
+    position: relative;
+    margin-left:200px;
+}
+.all{
+    background-color: beige;
+    box-shadow: 2px 2px 2px 2px;
+    height: 250px;
+    margin-left: 100px;
+    padding-right: 200px;
+    width: fit-content;
+
+}
+.btn{
+    margin-top: 30px;
+    margin-left: 230px;
+    background-color:burlywood;
+    box-shadow: 2px 2px 2px ;
+    border-radius: 8px;
+    width: 100px;
+   
+}
+.btn:active{
+    box-shadow: 0px 2px 2px ;
+}
