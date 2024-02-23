@@ -79,4 +79,15 @@ class Tokenrepository {
     }
     return null;
   }
+
+  static String? CheckToken({required String token}) {
+    try {
+      final jwt = JWT.verify(token, SecretKey(SECRET_SAUCE));
+      if (jwt.payload != null) {
+        return jwt.payload;
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
 }
