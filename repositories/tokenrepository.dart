@@ -84,7 +84,7 @@ class Tokenrepository {
     try {
       final jwt = JWT.verify(token, SecretKey(SECRET_SAUCE));
       if (jwt.payload != null) {
-        return jwt.payload;
+        return jwt.payload["playerid"];
       }
     } catch (e) {
       print(e);

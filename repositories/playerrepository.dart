@@ -8,7 +8,21 @@ class PlayerRepository {
     try {
       final playerdoc = await playerscollection.findAndModify(
           query: where.id(ObjectId.fromHexString(id)),
-          update: modify.set("playername", playername));
+          update: {"playername": playername});
+
+      return playerdoc;
+    } catch (e) {
+      print(e);
+    }
+    return null;
+  }
+
+  static Future<Map<String, dynamic>?> setEmail(
+      {required String email, required String id}) async {
+    try {
+      final playerdoc = await playerscollection.findAndModify(
+          query: where.id(ObjectId.fromHexString(id)),
+          update: {"email": email});
 
       return playerdoc;
     } catch (e) {

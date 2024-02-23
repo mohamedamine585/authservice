@@ -1,7 +1,8 @@
-import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 
-import 'handlers/roothandler.dart';
+import 'handlers/deleteaccounthandler.dart';
+import 'handlers/getdochandler.dart';
+import 'handlers/setemailHandler.dart';
 import 'handlers/setnameHandler.dart';
 import 'handlers/signinhandler.dart';
 import 'handlers/signuphandler.dart';
@@ -10,4 +11,7 @@ import 'handlers/signuphandler.dart';
 Router router = Router()
   ..post('/signin', signinHandler)
   ..post('/signup', signupHandler)
-  ..get('/setname', setnameHandler);
+  ..put('/setname', setnameHandler)
+  ..put('/setemail', setemailHandler)
+  ..get('/getdoc', getdocHandler)
+  ..delete('/deleteaccount', deleteaccountHandler);

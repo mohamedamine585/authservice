@@ -6,19 +6,15 @@ Middleware rootmiddleware() {
   return (Handler innerhandler) {
     return (Request request) async {
       if (request.requestedUri.path == "/signin" ||
-          request.requestedUri.path == "/signup") {
-        final requestbody = await request.readAsString();
-        final requestbodydecoded = json.decode(requestbody);
-
-        if (requestbodydecoded["email"] == null ||
-            requestbodydecoded["password"] == null) {
-          return Response.badRequest(
-              body: json.encode({"message": "bad request body format"}));
-        }
-
+          request.requestedUri.path == "/signup" ||
+          request.requestedUri.path == "/setname" ||
+          request.requestedUri.path == "/setemail" ||
+          request.requestedUri.path == "/delete" ||
+          request.requestedUri.path == "/getdoc") {
         return await innerhandler(request);
+      } else {
+        return Response.notFound(json.encode({"message": "route not found"}));
       }
-      return await innerhandler(request);
     };
   };
 }
