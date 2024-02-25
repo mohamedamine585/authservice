@@ -30,4 +30,16 @@ class PlayerRepository {
     }
     return null;
   }
+
+  static Future<Map<String, dynamic>?> getdoc({required String id}) async {
+    try {
+      final playerdoc =
+          await playerscollection.findOne(where.id(ObjectId.fromHexString(id)));
+
+      return playerdoc;
+    } catch (e) {
+      print(e);
+    }
+    return null;
+  }
 }
