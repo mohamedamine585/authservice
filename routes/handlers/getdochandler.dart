@@ -8,7 +8,7 @@ Future<Response> getdocHandler(Request req) async {
     final doc = await PlayerRepository.getdoc(id: req.context["_id"] as String);
     if (doc?.isNotEmpty ?? false) {
       return Response.ok(json.encode({
-        "playername": doc!["playername"],
+        "name": doc!["name"],
         "email": doc["email"],
         "playedgames": doc["playedgames"],
         "wongames": doc["wongames"],
