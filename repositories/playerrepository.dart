@@ -8,7 +8,7 @@ class PlayerRepository {
     try {
       final playerdoc = await playerscollection.findAndModify(
           query: where.id(ObjectId.fromHexString(id)),
-          update: {"playername": playername});
+          update: {"name": playername});
 
       return playerdoc;
     } catch (e) {
