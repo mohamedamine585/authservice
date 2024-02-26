@@ -11,6 +11,7 @@ void main() async {
       'test${DateTime.now().microsecondsSinceEpoch}new@example.com';
 
   final String password = "password123";
+  String token = "";
 
   group("Authentication testing", () {
     test('Signup Test', () async {
@@ -29,6 +30,7 @@ void main() async {
       final Map<String, String> body = {'email': email, 'password': password};
       final http.Response response =
           await http.post(signupUrl, body: json.encode(body));
+      token = response.headers["authorization"] ?? "";
 
       expect(response.statusCode, 200);
       expect(response.headers['content-type'], 'application/json');
@@ -38,8 +40,9 @@ void main() async {
     test('SetName Test', () async {
       final Uri signupUrl = Uri.parse('$baseUrl/setname');
       final Map<String, String> body = {'name': 'name123'};
+      final Map<String, String> headers = {'authorization': 'Bearer ${token}'};
       final http.Response response =
-          await http.put(signupUrl, body: json.encode(body));
+          await http.put(signupUrl, body: json.encode(body), headers: headers);
 
       expect(response.statusCode, 200);
       expect(json.decode(response.body), {"message": "Player name changed"});
@@ -49,8 +52,9 @@ void main() async {
     test('SetEmail Test', () async {
       final Uri signupUrl = Uri.parse('$baseUrl/setemail');
       final Map<String, String> body = {'email': newEmail};
+      final Map<String, String> headers = {'authorization': 'Bearer ${token}'};
       final http.Response response =
-          await http.put(signupUrl, body: json.encode(body));
+          await http.put(signupUrl, body: json.encode(body), headers: headers);
 
       expect(response.statusCode, 200);
       expect(response.headers['content-type'], 'application/json');
