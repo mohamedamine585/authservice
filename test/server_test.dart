@@ -1,39 +1,52 @@
 import 'dart:io';
-
-import 'package:http/http.dart';
 import 'package:test/test.dart';
+import 'package:http/http.dart';
 
 void main() {
-  final port = '8080';
-  final host = 'http://0.0.0.0:$port';
-  late Process p;
+  Process? process;
+  setUpAll(() async {
+    Map<String, String> env = Map.from(Platform.environment);
+    env["DB"] = "TictactoeTest";
 
-  setUp(() async {
-    p = await Process.start(
-      'dart',
-      ['run', 'bin/server.dart'],
-      environment: {'PORT': port},
-    );
-    // Wait for server to start and print to stdout.
-    await p.stdout.first;
+    process =
+        await Process.start("dart", ["bin/server.dart"], environment: env);
+    process?.stdout.listen((event) {
+      print(event);
+    });
   });
 
-  tearDown(() => p.kill());
+  final String baseUrl = 'http://0.0.0.0:8080';
+  final String email =
+      'test${DateTime.now().microsecondsSinceEpoch}@example.com';
 
-  test('Root', () async {
-    final response = await get(Uri.parse('$host/'));
-    expect(response.statusCode, 200);
-    expect(response.body, 'Hello, World!\n');
-  });
+  final String password = "password123";
+  group("Authentication testing", () {
+    test('Signup Test', () async {
+      final Uri signupUrl = Uri.parse('$baseUrl/signup/');
+      final Map<String, String> body = {'email': email, 'password': password};
 
-  test('Echo', () async {
-    final response = await get(Uri.parse('$host/echo/hello'));
-    expect(response.statusCode, 200);
-    expect(response.body, 'hello\n');
-  });
+      final Response response = await post(signupUrl, body: body);
 
-  test('404', () async {
-    final response = await get(Uri.parse('$host/foobar'));
-    expect(response.statusCode, 404);
+      expect(response.statusCode, 200);
+      expect(response.headers['content-type'], 'application/json');
+
+      // Assuming the token is in the 'Authorization' header with the format 'Bearer <token>'
+      expect(response.headers['authorization'], isNotNull);
+      expect(response.headers['authorization']!.startsWith('Bearer '), isTrue);
+    });
+
+    test('Signin Test', () async {
+      final Uri signinUrl = Uri.parse('$baseUrl/signin');
+      final Map<String, String> body = {'email': email, 'password': password};
+
+      final Response response = await post(signinUrl, body: body);
+
+      expect(response.statusCode, 200);
+      expect(response.headers['content-type'], 'application/json');
+
+      // Assuming the token is in the 'Authorization' header with the format 'Bearer <token>'
+      expect(response.headers['authorization'], isNotNull);
+      expect(response.headers['authorization']!.startsWith('Bearer '), isTrue);
+    });
   });
 }
