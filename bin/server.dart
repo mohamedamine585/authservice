@@ -9,7 +9,7 @@ import 'utils.dart';
 import 'init.dart';
 
 void main(List<String> args) async {
-  final ip = "0.0.0.0";
+  final ip = "localhost";
   final port = int.parse('8080');
 
   final handler = Pipeline()

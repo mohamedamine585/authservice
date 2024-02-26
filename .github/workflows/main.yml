@@ -11,15 +11,13 @@ jobs:
       steps:
         - uses: dart-lang/setup-dart@v1
         - uses: actions/checkout@v3
-       
-        - name: Build  Container 
-          run:  docker build  -t authserver .             
-        - name:  
-          run: docker run authserver &
-          shell: bash
-
+        
         - name: Install dependencies
           run: dart pub get
+                 
+        - name:  
+          run: dart run bin/server.dart &
+          shell: bash
 
         - name: Run Test 
           run : dart test test/server_test.dart
