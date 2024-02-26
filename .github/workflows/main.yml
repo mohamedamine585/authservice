@@ -15,7 +15,7 @@ jobs:
         - name: Build  Container 
           run:  docker build  -t authserver .             
         - name:  
-          run: docker run -e DB=TictactoeTest authserver &
+          run: docker run -e DB=TictactoeTest -p 8080:8080 authserver
           shell: bash
 
         - name: Install dependencies
