@@ -19,7 +19,7 @@ Future<Response> signinHandler(Request req) async {
             });
       } else {
         return Response.ok(
-            json.encode({"message": "Cannot sign up the player"}),
+            json.encode({"message": "Cannot sign in the player"}),
             headers: {'content-type': 'application/json'});
       }
     }
