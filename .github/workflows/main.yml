@@ -22,7 +22,7 @@ jobs:
           run: dart pub get
 
         - name: Run Test 
-          run : dart test server_test.dart
+          run : dart test test/server_test.dart
             
          
  
