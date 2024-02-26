@@ -8,7 +8,6 @@ Future<Response> setemailHandler(Request req) async {
     final requestbody = json.decode(await req.readAsString());
     final updateddoc = await PlayerRepository.setEmail(
         email: requestbody["email"], id: req.context["_id"] as String);
-
     if (updateddoc == null) {
       return Response(404);
     }

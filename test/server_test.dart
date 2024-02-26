@@ -4,7 +4,7 @@ import 'package:test/test.dart';
 import 'package:http/http.dart' as http;
 
 void main() async {
-  final String baseUrl = 'http://0.0.0.0:8080';
+  final String baseUrl = 'http://localhost:8080';
   final String email =
       'test${DateTime.now().microsecondsSinceEpoch}@example.com';
   final String newEmail =
@@ -16,7 +16,10 @@ void main() async {
   group("Authentication testing", () {
     test('Signup Test', () async {
       final Uri signupUrl = Uri.parse('$baseUrl/signup');
-      final Map<String, String> body = {'email': email, 'password': password};
+      final Map<String, String> body = {
+        'email': email,
+        'password': "password123"
+      };
       final http.Response response =
           await http.post(signupUrl, body: json.encode(body));
 
@@ -27,7 +30,10 @@ void main() async {
     });
     test('Signin Test', () async {
       final Uri signupUrl = Uri.parse('$baseUrl/signin');
-      final Map<String, String> body = {'email': email, 'password': password};
+      final Map<String, String> body = {
+        'email': email,
+        'password': "password123"
+      };
       final http.Response response =
           await http.post(signupUrl, body: json.encode(body));
       token = response.headers["authorization"] ?? "";
@@ -40,7 +46,7 @@ void main() async {
     test('SetName Test', () async {
       final Uri signupUrl = Uri.parse('$baseUrl/setname');
       final Map<String, String> body = {'name': 'name123'};
-      final Map<String, String> headers = {'authorization': 'Bearer ${token}'};
+      final Map<String, String> headers = {'authorization': token};
       final http.Response response =
           await http.put(signupUrl, body: json.encode(body), headers: headers);
 
@@ -52,7 +58,7 @@ void main() async {
     test('SetEmail Test', () async {
       final Uri signupUrl = Uri.parse('$baseUrl/setemail');
       final Map<String, String> body = {'email': newEmail};
-      final Map<String, String> headers = {'authorization': 'Bearer ${token}'};
+      final Map<String, String> headers = {'authorization': token};
       final http.Response response =
           await http.put(signupUrl, body: json.encode(body), headers: headers);
 
@@ -64,7 +70,7 @@ void main() async {
       final Uri signupUrl = Uri.parse('$baseUrl/signin');
       final Map<String, String> body = {
         'email': newEmail,
-        'password': password
+        'password': "password123"
       };
       final http.Response response =
           await http.post(signupUrl, body: json.encode(body));
