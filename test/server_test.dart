@@ -7,6 +7,9 @@ void main() async {
   final String baseUrl = 'http://0.0.0.0:8080';
   final String email =
       'test${DateTime.now().microsecondsSinceEpoch}@example.com';
+  final String newEmail =
+      'test${DateTime.now().microsecondsSinceEpoch}new@example.com';
+
   final String password = "password123";
 
   group("Authentication testing", () {
@@ -32,7 +35,41 @@ void main() async {
       expect(response.headers['authorization'], isNotNull);
       expect(response.headers['authorization']!.startsWith('Bearer '), isTrue);
     });
+    test('SetName Test', () async {
+      final Uri signupUrl = Uri.parse('$baseUrl/setname');
+      final Map<String, String> body = {'name': 'name123'};
+      final http.Response response =
+          await http.put(signupUrl, body: json.encode(body));
 
+      expect(response.statusCode, 200);
+      expect(json.decode(response.body), {"message": "Player name changed"});
+      expect(response.headers['content-type'], 'application/json');
+    });
+
+    test('SetEmail Test', () async {
+      final Uri signupUrl = Uri.parse('$baseUrl/setemail');
+      final Map<String, String> body = {'email': newEmail};
+      final http.Response response =
+          await http.put(signupUrl, body: json.encode(body));
+
+      expect(response.statusCode, 200);
+      expect(response.headers['content-type'], 'application/json');
+      expect(json.decode(response.body), {"message": "Player email changed"});
+    });
+    test('Signin Test 2', () async {
+      final Uri signupUrl = Uri.parse('$baseUrl/signin');
+      final Map<String, String> body = {
+        'email': newEmail,
+        'password': password
+      };
+      final http.Response response =
+          await http.post(signupUrl, body: json.encode(body));
+
+      expect(response.statusCode, 200);
+      expect(response.headers['content-type'], 'application/json');
+      expect(response.headers['authorization'], isNotNull);
+      expect(response.headers['authorization']!.startsWith('Bearer '), isTrue);
+    });
     // Add other tests as needed
   });
 }
