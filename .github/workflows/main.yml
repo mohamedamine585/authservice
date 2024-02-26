@@ -2,8 +2,7 @@ name: Dart Test
 
 on:
   push:
-    branches:
-      - feature 
+    
 
 jobs:
   test:
