@@ -10,6 +10,7 @@ dependencies:
   args: ^2.4.0
   crypt: ^4.3.1
   dart_jsonwebtoken: ^2.12.2
+  mockito: ^5.4.4
   mongo_dart: ^0.9.4
   shelf: ^1.4.0
   shelf_router: ^1.1.0
