@@ -6,7 +6,7 @@ import '../../repositories/tokenrepository.dart';
 
 Future<Response> tictactoesigninHandler(Request req) async {
   try {
-    final requestbody = req.context["body"] as Map<String, dynamic>?;
+    final requestbody = json.decode(await req.readAsString());
     if (requestbody != null) {
       List<int> tictactoe = [];
       (requestbody["tictactoe"] as List<dynamic>).forEach((element) {
