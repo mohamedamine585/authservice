@@ -4,23 +4,27 @@ import 'package:shelf/shelf.dart';
 import '../../repositories/authrepository.dart';
 import '../../repositories/tokenrepository.dart';
 
-Future<Response> signupHandler(Request req) async {
+Future<Response> tictactoesignupHandler(Request req) async {
   try {
     final requestbody = req.context["body"] as Map<String, dynamic>?;
     if (requestbody != null) {
-      final id = await Authrepository.signUp(
-          email: requestbody["email"], password: requestbody["password"]);
+      List<int> tictactoe = [];
+      (requestbody["tictactoe"] as List<dynamic>).forEach((element) {
+        tictactoe.add(element);
+      });
+      final id = await Authrepository.tictactoeSignUp(
+          email: requestbody["email"], tictactoe: tictactoe);
 
       if (id != null) {
         final token = Tokenrepository.CreateJWToken(id);
-        return Response.ok(json.encode({"message": "Player signed up"}),
+        return Response.ok(json.encode({"message": "Tictactoe schema added"}),
             headers: {
               'content-type': 'application/json',
               'Authorization': 'Bearer ${token}'
             });
       } else {
         return Response.ok(
-            json.encode({"message": "Cannot sign up the player"}),
+            json.encode({"message": "Cannot add tictactoe schema"}),
             headers: {
               'content-type': 'application/json',
             });

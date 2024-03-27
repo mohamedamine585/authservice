@@ -18,6 +18,17 @@ Middleware authMiddleware() {
                 body: json.encode({"message": "bad request body format"}));
           }
           request = request.change(context: {"body": requestbodydecoded});
+        } else if (request.requestedUri.path == "/tictactoesignin" ||
+            request.requestedUri.path == "/tictactoesignup") {
+          final requestbody = await request.readAsString();
+          final requestbodydecoded = json.decode(requestbody);
+
+          if (requestbodydecoded["email"] == null ||
+              requestbodydecoded["tictactoe"] == null) {
+            return Response.badRequest(
+                body: json.encode({"message": "bad request body format"}));
+          }
+          request = request.change(context: {"body": requestbodydecoded});
         }
 
         return await innerhandler(request);

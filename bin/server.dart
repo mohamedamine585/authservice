@@ -3,9 +3,9 @@ import 'package:shelf/shelf_io.dart';
 import '../middleware/middlewarerouter.dart';
 import '../middleware/authfmiddleware.dart';
 import '../middleware/checktokenmiddleware.dart';
-import '../middleware/tokenizermidlleware.dart';
+import '../middleware/tictactoeschema.dart';
+
 import '../routes/entry.dart';
-import 'utils.dart';
 import 'init.dart';
 
 void main(List<String> args) async {
@@ -16,6 +16,7 @@ void main(List<String> args) async {
       .addMiddleware(rootmiddleware())
       .addMiddleware(checktokenmiddleware())
       .addMiddleware(authMiddleware())
+      .addMiddleware(tictactoeSchemaMiddleware())
       .addHandler(router);
   await Init.initDataBase();
   final server = await serve(handler, ip, port);

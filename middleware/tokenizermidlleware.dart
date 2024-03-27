@@ -9,8 +9,6 @@ Middleware tokenizer() {
   return (Handler innerHandler) {
     return (Request request) async {
       try {
-        Response response = await innerHandler(request);
-
         ObjectId id = ObjectId.fromHexString(request.context["_id"] as String);
         String? token = Tokenrepository.CreateJWToken(id);
 
