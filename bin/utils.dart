@@ -11,8 +11,8 @@ String hashIT(String psw) {
   return Crypt.sha256(psw, salt: "salt&&&").hash;
 }
 
-Digest hashMatrix(Uint8List matrixBytes) {
-  return sha256.convert(matrixBytes);
+Digest hashtictactoe(Uint8List tictactoeBytes) {
+  return sha256.convert(tictactoeBytes);
 }
 
 late final DbCollection playerscollection;

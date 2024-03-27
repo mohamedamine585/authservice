@@ -1,5 +1,6 @@
 import 'package:shelf_router/shelf_router.dart';
 
+import 'handlers/changetictactoesignup.dart';
 import 'handlers/deleteaccounthandler.dart';
 import 'handlers/getdochandler.dart';
 import 'handlers/setemailHandler.dart';
@@ -13,8 +14,9 @@ import 'handlers/signuptictactoe.dart';
 Router router = Router()
   ..post('/signin', signinHandler)
   ..post('/signup', signupHandler)
-  ..post('/tictactoesignin', tictactoesigninHandler)
-  ..post('/tictactoesignup', tictactoesignupHandler)
+  ..post('/tictactoein', tictactoesigninHandler)
+  ..post('/tictactoe', tictactoesignupHandler)
+  ..put('/tictactoe', tictactoechangeHandler)
   ..put('/setname', setnameHandler)
   ..put('/setemail', setemailHandler)
   ..get('/getdoc', getdocHandler)

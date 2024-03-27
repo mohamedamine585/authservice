@@ -1,6 +1,5 @@
 import 'package:mongo_dart/mongo_dart.dart';
 
-import 'package:test/expect.dart';
 import 'dart:typed_data';
 
 import '../bin/utils.dart';
@@ -20,12 +19,12 @@ class Authrepository {
     return null;
   }
 
-  static Future<ObjectId?> tictactoeSignIn(
+  static Future<ObjectId?> setTictactoeSignIn(
       {required String email, required List<int> tictactoe}) async {
     try {
-      final hashedmatrix = hashMatrix(Uint8List.fromList(tictactoe));
+      final hashedtictactoe = hashtictactoe(Uint8List.fromList(tictactoe));
       final Pdata = await playerscollection.findOne(
-          where.eq("email", email).eq("tictactoe", hashedmatrix.bytes));
+          where.eq("email", email).eq("tictactoe", hashedtictactoe.bytes));
       if (Pdata?.isNotEmpty ?? false) {
         return Pdata!['_id'];
       }
@@ -35,16 +34,38 @@ class Authrepository {
     return null;
   }
 
-  static Future<ObjectId?> tictactoeSignUp(
+  static Future<ObjectId?> changeTictactoeSignIn(
+      {required String email,
+      required List<int> oldtictactoe,
+      required List<int> newtictactoe}) async {
+    try {
+      final hashedtictactoe = hashtictactoe(Uint8List.fromList(newtictactoe));
+      final playerid = await setTictactoeSignIn(
+          email: email,
+          tictactoe: hashtictactoe(Uint8List.fromList(oldtictactoe)).bytes);
+      if (playerid != null) {
+        final Pdata = await playerscollection.updateOne(
+            where.id(playerid), modify.set("tictactoe", hashedtictactoe.bytes));
+        if (Pdata.isSuccess) {
+          return Pdata.document!["_id"] as ObjectId;
+        }
+      }
+    } catch (e) {
+      print(e);
+    }
+    return null;
+  }
+
+  static Future<ObjectId?> settictactoeSignUp(
       {required String email, required List<int> tictactoe}) async {
     try {
-      final hashedmatrix = hashMatrix(Uint8List.fromList(tictactoe));
+      final hashedtictactoe = hashtictactoe(Uint8List.fromList(tictactoe));
       final existing =
           await playerscollection.findOne(where.eq("email", email));
       if (existing?.isNotEmpty ?? false) {
         final doc = await playerscollection.updateOne(
             where.id(existing!["_id"]),
-            modify.set("tictactoe", hashedmatrix.bytes));
+            modify.set("tictactoe", hashedtictactoe.bytes));
         if (doc.isSuccess) {
           return existing["_id"] as ObjectId;
         }

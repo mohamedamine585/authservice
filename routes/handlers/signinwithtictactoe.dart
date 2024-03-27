@@ -12,7 +12,7 @@ Future<Response> tictactoesigninHandler(Request req) async {
       (requestbody["tictactoe"] as List<dynamic>).forEach((element) {
         tictactoe.add(element);
       });
-      final id = await Authrepository.tictactoeSignIn(
+      final id = await Authrepository.setTictactoeSignIn(
           email: requestbody["email"], tictactoe: tictactoe);
       if (id != null) {
         final token = Tokenrepository.CreateJWToken(id);

@@ -4,16 +4,22 @@ import 'package:shelf/shelf.dart';
 import '../../repositories/authrepository.dart';
 import '../../repositories/tokenrepository.dart';
 
-Future<Response> tictactoesignupHandler(Request req) async {
+Future<Response> tictactoechangeHandler(Request req) async {
   try {
     final requestbody = req.context["body"] as Map<String, dynamic>?;
     if (requestbody != null) {
-      List<int> tictactoe = [];
-      (requestbody["tictactoe"] as List<dynamic>).forEach((element) {
-        tictactoe.add(element);
+      List<int> newtictactoe = [];
+      (requestbody["newtictactoe"] as List<dynamic>).forEach((element) {
+        newtictactoe.add(element);
       });
-      final id = await Authrepository.settictactoeSignUp(
-          email: requestbody["email"], tictactoe: tictactoe);
+      List<int> oldtictactoe = [];
+      (requestbody["oldtictactoe"] as List<dynamic>).forEach((element) {
+        oldtictactoe.add(element);
+      });
+      final id = await Authrepository.changeTictactoeSignIn(
+          email: requestbody["email"],
+          newtictactoe: newtictactoe,
+          oldtictactoe: oldtictactoe);
 
       if (id != null) {
         final token = Tokenrepository.CreateJWToken(id);
