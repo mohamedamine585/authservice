@@ -12,7 +12,8 @@ Middleware rootmiddleware() {
           request.requestedUri.path == "/delete" ||
           request.requestedUri.path == "/getdoc" ||
           request.requestedUri.path == "/tictactoein" ||
-          request.requestedUri.path == "/tictactoe") {
+          request.requestedUri.path == "/tictactoe" ||
+          request.requestedUri.path == "/verifyemail") {
         return await innerhandler(request);
       } else {
         return Response.notFound(json.encode({"message": "route not found"}));

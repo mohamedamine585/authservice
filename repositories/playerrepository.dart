@@ -70,4 +70,16 @@ class PlayerRepository {
     }
     return null;
   }
+
+  static Future<bool> deleteAccount({required String id}) async {
+    try {
+      final playerdoc = await playerscollection
+          .deleteOne(where.id(ObjectId.fromHexString(id)));
+
+      return playerdoc.isSuccess;
+    } catch (e) {
+      print(e);
+    }
+    return false;
+  }
 }

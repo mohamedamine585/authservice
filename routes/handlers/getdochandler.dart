@@ -13,7 +13,8 @@ Future<Response> getdocHandler(Request req) async {
         "playedgames": doc["playedgames"],
         "wongames": doc["wongames"],
         "rating": doc["rating"],
-        "country": doc["country"]
+        "country": doc["country"],
+        "isEmailVerified": doc["isEmailVerified"]
       }));
     } else {
       return Response.ok(

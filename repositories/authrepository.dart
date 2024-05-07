@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:mailer/mailer.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 
 import 'dart:typed_data';
@@ -93,5 +96,35 @@ class Authrepository {
       print(e);
     }
     return null;
+  }
+
+  static Future<int?> sendEmailVerification({required String email}) async {
+    try {
+      Random random = Random();
+      int min = 100000; // minimum value of a 6-digit number
+      int max = 999999; // maximum value of a 6-digit number
+      final randomNumber = min + random.nextInt(max - min);
+      final message = Message()
+        ..from = Address(email, 'Tictactoe')
+        ..recipients.add('foxweb585@gmail.com')
+        ..subject = 'Email Verification:: 😀 :: ${DateTime.now()}'
+        ..text =
+            'This is your email verification code for Tictactoe application.\n \n $randomNumber'
+        ..html = "<h1>Test</h1>\n<p>Hey! Here's some HTML content</p>";
+
+      return randomNumber;
+    } catch (e) {
+      print(e);
+    }
+    return null;
+  }
+
+  static Future<void> verifyemail({required ObjectId id}) async {
+    try {
+      final doc = await playerscollection.updateOne(
+          where.id(id), modify.set("isEmailVerified", true));
+    } catch (e) {
+      print(e);
+    }
   }
 }

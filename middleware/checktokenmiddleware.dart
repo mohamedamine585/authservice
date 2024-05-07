@@ -11,12 +11,14 @@ Middleware checktokenmiddleware() {
         if (request.requestedUri.path == "/setname" ||
             request.requestedUri.path == "/setemail" ||
             request.requestedUri.path == "/getdoc" ||
-            request.requestedUri.path == "/deleteaccount") {
+            request.requestedUri.path == "/deleteaccount" ||
+            request.requestedUri.path == "/verifyemail") {
           String? token = request.headers["Authorization"];
 
           token = token?.split(" ")[1];
 
           if (token != null) {
+            print(token);
             request = request.change(
                 context: {"_id": Tokenrepository.CheckToken(token: token)});
           } else {
