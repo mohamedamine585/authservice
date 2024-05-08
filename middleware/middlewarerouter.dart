@@ -13,7 +13,8 @@ Middleware rootmiddleware() {
           request.requestedUri.path == "/getdoc" ||
           request.requestedUri.path == "/tictactoein" ||
           request.requestedUri.path == "/tictactoe" ||
-          request.requestedUri.path == "/verifyemail") {
+          request.requestedUri.path == "/verifyemail" ||
+          request.requestedUri.path == "/player") {
         return await innerhandler(request);
       } else {
         return Response.notFound(json.encode({"message": "route not found"}));

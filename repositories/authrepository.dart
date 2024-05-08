@@ -1,6 +1,5 @@
-import 'dart:math';
+import 'dart:io';
 
-import 'package:mailer/mailer.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 
 import 'dart:typed_data';
@@ -100,19 +99,24 @@ class Authrepository {
 
   static Future<int?> sendEmailVerification({required String email}) async {
     try {
-      Random random = Random();
-      int min = 100000; // minimum value of a 6-digit number
-      int max = 999999; // maximum value of a 6-digit number
-      final randomNumber = min + random.nextInt(max - min);
-      final message = Message()
-        ..from = Address(email, 'Tictactoe')
-        ..recipients.add('foxweb585@gmail.com')
-        ..subject = 'Email Verification:: 😀 :: ${DateTime.now()}'
-        ..text =
-            'This is your email verification code for Tictactoe application.\n \n $randomNumber'
-        ..html = "<h1>Test</h1>\n<p>Hey! Here's some HTML content</p>";
+      final emailContent = '''
+  To: recipient@example.com
+  Subject: Test Dart Email
 
-      return randomNumber;
+  This is a test email sent from Dart using sendmail.
+  ''';
+
+      // Execute sendmail command to send the email
+      final sendmailProcess = await Process.start(
+        'sendmail',
+        ['-t', '-oi'],
+        // Pass the email content as input to the sendmail process
+        mode: ProcessStartMode.inheritStdio,
+      );
+      sendmailProcess.stdin.write(emailContent);
+      sendmailProcess.stdin.close();
+      await sendmailProcess.exitCode;
+      print('Email sent successfully.');
     } catch (e) {
       print(e);
     }
@@ -121,7 +125,7 @@ class Authrepository {
 
   static Future<void> verifyemail({required ObjectId id}) async {
     try {
-      final doc = await playerscollection.updateOne(
+      await playerscollection.updateOne(
           where.id(id), modify.set("isEmailVerified", true));
     } catch (e) {
       print(e);

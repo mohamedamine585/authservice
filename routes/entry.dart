@@ -9,6 +9,7 @@ import 'handlers/signinhandler.dart';
 import 'handlers/signinwithtictactoe.dart';
 import 'handlers/signuphandler.dart';
 import 'handlers/signuptictactoe.dart';
+import 'handlers/updatePlayer.dart';
 import 'handlers/verifyemailhandler.dart';
 
 // Configure routes.
@@ -21,4 +22,5 @@ Router router = Router()
   ..post('/tictactoe', tictactoesignupHandler)
   ..put('/tictactoe', tictactoechangeHandler)
   ..get('/getdoc', getdocHandler)
+  ..put('/player', updatePlayer)
   ..delete('/delete', deleteAccountHandler);

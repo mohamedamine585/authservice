@@ -12,7 +12,8 @@ Middleware checktokenmiddleware() {
             request.requestedUri.path == "/setemail" ||
             request.requestedUri.path == "/getdoc" ||
             request.requestedUri.path == "/deleteaccount" ||
-            request.requestedUri.path == "/verifyemail") {
+            request.requestedUri.path == "/verifyemail" ||
+            request.requestedUri.path == "/player") {
           String? token = request.headers["Authorization"];
 
           token = token?.split(" ")[1];

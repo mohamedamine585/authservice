@@ -8,10 +8,10 @@ import '../../repositories/playerrepository.dart';
 Future<Response> sendEmailVerification(Request req) async {
   try {
     final id = req.context["_id"];
-    final doc = await PlayerRepository.getdoc(id: req.context["_id"] as String);
+    final doc = await PlayerRepository.getdoc(id: id as String);
     if (doc != null) {
       final email = doc["email"];
-      if (email != null && !(doc["isEmailVerified"] ?? false)) {
+      if (email != null && (doc["isEmailVerified"] ?? false)) {
         final randomNumber =
             await Authrepository.sendEmailVerification(email: email);
         return Response.ok(json.encode({"random": randomNumber}));

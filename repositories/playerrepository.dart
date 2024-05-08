@@ -71,6 +71,27 @@ class PlayerRepository {
     return null;
   }
 
+  static Future<void> updatePlayer(
+      {required String id, required Map<String, dynamic> doc}) async {
+    try {
+      (doc["password"] != null)
+          ? await playerscollection.update(where.id(ObjectId.fromHexString(id)),
+              modify.set("password", hashIT(doc["password"])))
+          : null;
+      (doc["name"] != null)
+          ? await playerscollection.update(where.id(ObjectId.fromHexString(id)),
+              modify.set("name", hashIT(doc["name"])))
+          : null;
+      (doc["email"] != null)
+          ? await playerscollection.update(where.id(ObjectId.fromHexString(id)),
+              modify.set("email", hashIT(doc["email"])))
+          : null;
+    } catch (e) {
+      print(e);
+    }
+    return null;
+  }
+
   static Future<bool> deleteAccount({required String id}) async {
     try {
       final playerdoc = await playerscollection
