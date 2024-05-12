@@ -10,8 +10,6 @@ dependencies:
   args: ^2.4.0
   crypt: ^4.3.1
   dart_jsonwebtoken: ^2.12.2
-  google_sign_in: ^6.2.1
-  googleapis_auth: ^1.6.0
   mailer: ^6.1.0
   mockito: ^5.4.4
   mongo_dart: ^0.9.4
