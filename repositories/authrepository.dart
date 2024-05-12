@@ -1,10 +1,14 @@
-import 'dart:io';
+import 'dart:convert';
+import 'dart:math';
+
+import 'package:http/http.dart';
 
 import 'package:mongo_dart/mongo_dart.dart';
 
 import 'dart:typed_data';
 
 import '../bin/utils.dart';
+import '../routes/utils.dart';
 
 class Authrepository {
   static Future<ObjectId?> signIn(
@@ -99,26 +103,40 @@ class Authrepository {
 
   static Future<int?> sendEmailVerification({required String email}) async {
     try {
-      final emailContent = '''
-  To: recipient@example.com
-  Subject: Test Dart Email
-
-  This is a test email sent from Dart using sendmail.
-  ''';
-
-      // Execute sendmail command to send the email
-      final sendmailProcess = await Process.start(
-        'sendmail',
-        ['-t', '-oi'],
-        // Pass the email content as input to the sendmail process
-        mode: ProcessStartMode.inheritStdio,
+      final vnumber = generateSixDigitRandomNumber();
+      var response = await post(
+        Uri.parse(mailjetUrl),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization':
+              'Basic ' + base64Encode(utf8.encode('$apiKey:$apiSecret')),
+        },
+        body: jsonEncode({
+          'Messages': [
+            {
+              'Subject': 'Verification code XO game application',
+              'From': {'Email': 'foxweb585@gmail.com'},
+              'To': [
+                {
+                  'Email': email,
+                }
+              ],
+              'HTMLPart':
+                  '<h1>XO game app</h1><p>Hello, This is the verification code.</p> <h1> $vnumber</h1>',
+            }
+          ]
+        }),
       );
-      sendmailProcess.stdin.write(emailContent);
-      sendmailProcess.stdin.close();
-      await sendmailProcess.exitCode;
-      print('Email sent successfully.');
+
+      if (response.statusCode == 200) {
+        print('Email sent successfully.');
+        return int.parse(vnumber);
+      } else {
+        print('Failed to send email. Status code: ${response.statusCode}');
+        print('Response body: ${response.body}');
+      }
     } catch (e) {
-      print(e);
+      print('Error occurred: $e');
     }
     return null;
   }
@@ -131,4 +149,11 @@ class Authrepository {
       print(e);
     }
   }
+}
+
+String generateSixDigitRandomNumber() {
+  Random random = Random();
+  int randomNumber = random.nextInt(900000) +
+      100000; // Generates a random number between 100000 and 999999
+  return randomNumber.toString();
 }
